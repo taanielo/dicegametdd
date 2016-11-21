@@ -25,14 +25,19 @@ public class GameRunner {
 
     public void start() {
         do {
-            createGameRound();
+            currentRound = createGameRound();
+            rounds.add(currentRound);
+            if (config.getGameType().equals(GameConfig.GameType.ELIMINATING_ROUNDS)) {
+                Player lastPlayer = currentRound.getResults().stream().sorted().findFirst().get().getPlayer();
+                players.remove(lastPlayer);
+            }
         } while(!isOver());
     }
 
-    private void createGameRound() {
+    private GameRound createGameRound() {
         GameRound gameRound = new GameRound(players);
         gameRound.roll();
-        rounds.add(gameRound);
+        return gameRound;
     }
 
     public boolean isOver() {
