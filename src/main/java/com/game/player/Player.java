@@ -23,7 +23,6 @@ public class Player {
 
     public int roll() {
         int sum = diceBox.roll();
-        System.out.println(sum);
         stats.roll(sum);
         return sum;
     }

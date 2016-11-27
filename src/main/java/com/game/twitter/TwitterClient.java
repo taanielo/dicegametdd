@@ -1,13 +1,14 @@
 package com.game.twitter;
 
-import org.springframework.web.client.RestTemplate;
+import com.game.GameRound;
 
 public class TwitterClient {
 
-    private final RestTemplate restTemplate;
+    public TwitterClient(TwitterLogin login) {
+    }
 
-    public TwitterClient(TwitterLogin login, RestTemplate restTemplate) {
-        this.restTemplate = restTemplate;
+    public void postGameRound(GameRound gameRound) {
+
     }
 
     public static class TwitterLogin {

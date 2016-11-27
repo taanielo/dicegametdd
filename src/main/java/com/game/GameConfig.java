@@ -8,6 +8,10 @@ public class GameConfig {
         CLASSIC
     }
 
+    private boolean useTwitter;
+    private String twitterUsername;
+    private String twitterPassword;
+
     private int numberOfPlayers;
     private int numberOfDices;
     private int numberOfRounds;
@@ -51,6 +55,33 @@ public class GameConfig {
 
     public GameType getGameType() {
         return gameType;
+    }
+
+    public String getTwitterUsername() {
+        return twitterUsername;
+    }
+
+    public GameConfig setTwitterUsername(String twitterUsername) {
+        this.twitterUsername = twitterUsername;
+        return this;
+    }
+
+    public String getTwitterPassword() {
+        return twitterPassword;
+    }
+
+    public GameConfig setTwitterPassword(String twitterPassword) {
+        this.twitterPassword = twitterPassword;
+        return this;
+    }
+
+    public boolean getUseTwitter() {
+        return useTwitter;
+    }
+
+    public GameConfig setUseTwitter(boolean useTwitter) {
+        this.useTwitter = useTwitter;
+        return this;
     }
 
     public static GameConfig getClassicalThree() {
