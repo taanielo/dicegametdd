@@ -7,12 +7,16 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class GameRound {
+    private static int roundNumberCounter = 1;
+
+    private int roundNumber;
     private List<Player> players;
     private List<Result> results;
 
     public GameRound(List<Player> players) {
         this.players = new ArrayList<>(players);
         results = new ArrayList<>();
+        roundNumber = roundNumberCounter++;
     }
 
     public void roll() {
@@ -20,6 +24,10 @@ public class GameRound {
             throw new IllegalStateException("Gameround already played!");
         }
         players.forEach(player -> results.add(new Result(player, player.roll())));
+    }
+
+    public int getRoundNumber() {
+        return roundNumber;
     }
 
     public List<Result> getResults() {
@@ -36,8 +44,7 @@ public class GameRound {
     public String toString() {
         return results
                 .stream()
-                .sorted(Result::compareTo)
-                .map(result -> result.getPlayer().getName() + " rolled " + result.getRoll())
+                .map(result -> result.getPlayer().getColoredName() + " rolled \u001B[1m" + result.getRoll() + "\u001B[0m")
                 .collect(Collectors.joining("\n"));
     }
 

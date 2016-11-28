@@ -21,6 +21,10 @@ public class Player {
         return name;
     }
 
+    public String getColoredName() {
+        return "\u001B[31m" + name + "\u001B[0m";
+    }
+
     public int roll() {
         int sum = diceBox.roll();
         stats.roll(sum);

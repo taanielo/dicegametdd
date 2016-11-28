@@ -9,6 +9,7 @@ import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 public class GameRunner {
 
@@ -34,20 +35,46 @@ public class GameRunner {
     }
 
     public void start() {
+        displayGameInfo();
+
         rounds = new ArrayList<>();
         do {
             currentRound = createGameRound();
+            if (currentRound.getRoundNumber() > 1) {
+                logger.info("");
+            }
+            logger.info("++ Starting round nr " + currentRound.getRoundNumber() + " ++");
             currentRound.roll();
             if (config.getUseTwitter()) {
                 twitterClient.postGameRound(currentRound);
             }
-            logger.debug(currentRound);
+            logger.info(currentRound);
             rounds.add(currentRound);
             if (config.getGameType().equals(GameConfig.GameType.ELIMINATING_ROUNDS)) {
                 Player lastPlayer = currentRound.getResults().stream().sorted().findFirst().get().getPlayer();
                 players.remove(lastPlayer);
             }
         } while (!isOver());
+
+        displayWinners();
+    }
+
+    private void displayWinners() {
+        logger.info("");
+        Player winner = rounds.get(rounds.size() - 1).getWinner().getPlayer();
+        logger.info("Game is over! Winner is " + winner.getColoredName() + " with:");
+        logger.info("\tsum of rolls: \u001B[34;1m" + winner.getRolls().stream().mapToInt(Integer::intValue).sum() + "\u001B[0m");
+        logger.info("\tmax roll: \u001B[34;1m" + winner.getRolls().stream().max(Integer::compareTo).get() + "\u001B[0m");
+        logger.info("");
+    }
+
+    private void displayGameInfo() {
+        logger.info("");
+        logger.info("\u001B[40;37m  ### \u001B[40;32;1mStarting new game\u001B[40;37m ###  \u001B[0m");
+        logger.info("\ttype - " + config.getGameType());
+        logger.info("\trounds - " + config.getNumberOfRounds());
+        logger.info("\tdices - " + config.getNumberOfDices());
+        logger.info("");
     }
 
     private GameRound createGameRound() {
@@ -69,12 +96,16 @@ public class GameRunner {
 
     private Player createPlayer(int i) {
         DiceBox diceBox = DiceBox.getClassic(config.getNumberOfDices());
-        return new Player("Player " + i, diceBox);
+        return new Player("Player " + (i + 1), diceBox);
     }
 
     public static void main(String[] args) {
         GameConfig config = GameConfig.getClassicalThree();
         GameRunner game = new GameRunner(config);
         game.start();
+        try {
+            TimeUnit.MILLISECONDS.sleep(100);
+        } catch (InterruptedException e) {
+        }
     }
 }
