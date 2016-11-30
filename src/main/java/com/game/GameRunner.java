@@ -21,8 +21,10 @@ public class GameRunner {
     private GameRound currentRound;
     private TwitterClient twitterClient;
 
-
     public GameRunner(GameConfig config) {
+        if (!validConfig(config)) {
+            throw new IllegalArgumentException("Invalid configuration");
+        }
         this.config = config;
         players = new ArrayList<>();
         if (config.getUseTwitter()) {
@@ -32,6 +34,22 @@ public class GameRunner {
         for (int i = 0; i < config.getNumberOfPlayers(); i++) {
             players.add(createPlayer(i));
         }
+    }
+
+    private static boolean validConfig(GameConfig config) {
+        if (config.getNumberOfPlayers() <= 0) {
+            return false;
+        }
+        if (config.getNumberOfRounds() <= 0) {
+            return false;
+        }
+        if (config.getNumberOfDices() <= 0) {
+            return false;
+        }
+        if (config.getGameType() == null) {
+            return false;
+        }
+        return true;
     }
 
     public void start() {
@@ -70,7 +88,7 @@ public class GameRunner {
 
     private void displayGameInfo() {
         logger.info("");
-        logger.info("\u001B[40;37m  ### \u001B[40;32;1mStarting new game\u001B[40;37m ###  \u001B[0m");
+        logger.info("\u001B[37m### \u001B[32;1mStarting new game\u001B[37m ###  \u001B[0m");
         logger.info("\ttype - " + config.getGameType());
         logger.info("\trounds - " + config.getNumberOfRounds());
         logger.info("\tdices - " + config.getNumberOfDices());

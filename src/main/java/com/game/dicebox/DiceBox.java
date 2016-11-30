@@ -28,7 +28,7 @@ public class DiceBox {
     }
 
     public int getSum() {
-        return dices.stream().mapToInt(dice -> dice.getValue()).sum();
+        return dices.stream().mapToInt(Dice::getValue).sum();
     }
 
     public static DiceBox getClassic(int diceCount) {
