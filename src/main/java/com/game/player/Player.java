@@ -1,20 +1,25 @@
 package com.game.player;
 
-import com.game.dicebox.DiceBox;
+import com.game.dicecup.DiceCup;
+import com.game.dicecup.RollResult;
 import com.game.stats.Stats;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Player {
 
     private String name;
-    private DiceBox diceBox;
+    private DiceCup diceCup;
     private Stats stats;
+    private List<RollResult> rollResults;
 
-    public Player(String name, DiceBox diceBox) {
+    public Player(String name, DiceCup diceCup) {
         this.name = name;
-        this.diceBox = diceBox;
+        this.diceCup = diceCup;
+
         stats = new Stats();
+        rollResults = new ArrayList<>();
     }
 
     public String getName() {
@@ -26,17 +31,22 @@ public class Player {
     }
 
     public int roll() {
-        int sum = diceBox.roll();
-        stats.roll(sum);
-        return sum;
+        RollResult result = diceCup.roll();
+        rollResults.add(result);
+        stats.addRoll(result);
+        return result.getTotalRoll();
     }
 
     public int getRollCount() {
         return stats.getRollCount();
     }
 
-    public List<Integer> getRolls() {
-        return stats.getRolls();
+    public int getRollsSum() {
+        return stats.getRollsSum();
+    }
+
+    public List<RollResult> getRolls() {
+        return rollResults;
     }
 
     public int getMaxRoll() {

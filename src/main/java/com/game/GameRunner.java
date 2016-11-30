@@ -1,6 +1,6 @@
 package com.game;
 
-import com.game.dicebox.DiceBox;
+import com.game.dicecup.DiceCup;
 import com.game.player.Player;
 import com.game.twitter.TwitterClient;
 import com.game.twitter.TwitterClient.TwitterLogin;
@@ -81,8 +81,8 @@ public class GameRunner {
         logger.info("");
         Player winner = rounds.get(rounds.size() - 1).getWinner().getPlayer();
         logger.info("Game is over! Winner is " + winner.getColoredName() + " with:");
-        logger.info("\tsum of rolls: \u001B[34;1m" + winner.getRolls().stream().mapToInt(Integer::intValue).sum() + "\u001B[0m");
-        logger.info("\tmax roll: \u001B[34;1m" + winner.getRolls().stream().max(Integer::compareTo).get() + "\u001B[0m");
+        logger.info("\tsum of rolls: \u001B[34;1m" + winner.getRollsSum() + "\u001B[0m");
+        logger.info("\tmax addRoll: \u001B[34;1m" + winner.getMaxRoll() + "\u001B[0m");
         logger.info("");
     }
 
@@ -113,8 +113,8 @@ public class GameRunner {
     }
 
     private Player createPlayer(int i) {
-        DiceBox diceBox = DiceBox.getClassic(config.getNumberOfDices());
-        return new Player("Player " + (i + 1), diceBox);
+        DiceCup diceCup = DiceCup.getClassic(config.getNumberOfDices());
+        return new Player("Player " + (i + 1), diceCup);
     }
 
     public static void main(String[] args) {

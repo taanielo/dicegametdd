@@ -1,7 +1,7 @@
 package com.game.player;
 
 import com.game.dice.CustomDice;
-import com.game.dicebox.DiceBox;
+import com.game.dicecup.DiceCup;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -15,8 +15,8 @@ public class PlayerTest {
     @Before
     public void setUp() {
         CustomDice dice = new CustomDice(1,1);
-        DiceBox diceBox = DiceBox.getCustom(dice, 1);
-        player = new Player("p", diceBox);
+        DiceCup diceCup = DiceCup.getCustom(dice, 1);
+        player = new Player("p", diceCup);
     }
 
     @Test
@@ -32,7 +32,7 @@ public class PlayerTest {
         player.roll();
         assertEquals(1, player.getRollCount());
         assertEquals(1, player.getRolls().size());
-        assertEquals(1, player.getRolls().get(0).intValue());
+        assertEquals(1, player.getRolls().get(0).getRolls().get(0).intValue());
     }
 
     @After

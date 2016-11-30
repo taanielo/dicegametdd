@@ -1,41 +1,33 @@
 package com.game.stats;
 
-import java.util.ArrayList;
-import java.util.List;
+import com.game.dicecup.RollResult;
+import lombok.Getter;
 
 public class Stats {
 
+    @Getter
     private int rollCount;
+    @Getter
     private int maxRoll;
-    private List<Integer> rolls;
+    @Getter
+    private int rollsSum;
 
     public Stats() {
-        rolls = new ArrayList<>();
         rollCount = 0;
         maxRoll = 0;
+        rollsSum = 0;
     }
 
-    public void roll(int roll) {
+    public void addRoll(RollResult result) {
         rollCount++;
-        rolls.add(roll);
-        setMaxRoll(roll);
+        rollsSum += result.getTotalRoll();
+        setMaxRoll(result.getTotalRoll());
     }
 
-    private void setMaxRoll(int roll) {
-        if (maxRoll < roll) {
-            maxRoll = roll;
+    private void setMaxRoll(int rollSum) {
+        if (maxRoll < rollSum) {
+            maxRoll = rollSum;
         }
     }
 
-    public int getRollCount() {
-        return rollCount;
-    }
-
-    public List<Integer> getRolls() {
-        return rolls;
-    }
-
-    public int getMaxRoll() {
-        return maxRoll;
-    }
 }
